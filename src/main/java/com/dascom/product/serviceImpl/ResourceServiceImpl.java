@@ -14,8 +14,6 @@ public class ResourceServiceImpl implements ResourceService {
 		//1231231231231231123213123123123
 		//213423
 		//dsa
-		//12312312312
-		//123213
 		return null;
 	}
 
