@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+	<!-- 配置分页插件,如果不设计分页,下面的可以不用写 -->
+	<!--  <settings>
+		<setting name="logImpl" value="STDOUT_LOGGING"/> 
+		 解决，查询返回结果含null没有对应字段值问题  
+  		<setting name="callSettersOnNulls" value="true"/>
+	</settings>  -->
+	
+
+	<!-- 配置全局的别名 -->
+	 <typeAliases>
+	 	<!-- 批量别名定义,指定包名，mybatis自动扫描包中的po类，自动定义别名，别名是类名(首字母大写或小写都可以,一般用小写) -->
+		<package name="com.dascom.product.entity"/>
+	</typeAliases>
+
+	 <plugins>
+		<plugin interceptor="com.github.pagehelper.PageHelper">  
+            <property name="dialect" value="mysql"/>
+	        
+	        <!-- 设置为true时，使用RowBounds分页会进行count查询 -->
+	        <property name="rowBoundsWithCount" value="true"/>
+	        
+        </plugin>  
+	</plugins> 
+</configuration>

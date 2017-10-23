@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/mvc 
+    	http://www.springframework.org/schema/mvc/spring-mvc.xsd"
+		default-autowire="byType"
+		>
+
+
+
+
+
+	<!--1.配置数据源 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:mysql://localhost:3306/ds_product</value>
+		</property>
+		<property name="username">
+			<value>yin</value>
+		</property>
+		<property name="password">
+			<value>123456</value>
+		</property>
+	</bean>
+
+
+
+	<!--2.整合mybatis配置文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 2.1关联数据源 -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- 扫描mybatis的在mapper包中的xml 和扫描mybatis的配置文件 -->
+		<property name="mapperLocations" value="classpath:com/dascom/product/mapper/*.xml"></property>
+		<property name="configLocation" value="classpath:config/mybatis_config.xml"></property>
+	</bean>
+
+	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com/dascom/product/dao"></property>
+		<property name="sqlSessionFactoryBeanName"  value="sqlSessionFactory"></property>
+	</bean>
+
+	<!-- 3.事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	 <!-- 事务管理 通知 -->  
+    <!-- <tx:advice id="txAdvice" transaction-manager="transactionManager">  
+    </tx:advice> 
+    事务 aop 配置  
+    <aop:config>  
+        <aop:pointcut id="serviceMethods" expression="execution(* com.dascom.chatmodal.service..*(..))"/>  
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/>  
+    </aop:config>
+    
+    <aop:aspectj-autoproxy proxy-target-class="true"/>   -->
+	
+	
+	<!-- 4.声明式事务引用上面定义的事务管理器 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<!-- 5.加载日志文件等配置文件 -->
+	<bean id="propertyPlaceholderConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:log4j.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	
+	
+	
+</beans>
