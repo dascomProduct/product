@@ -11,6 +11,7 @@ public class ResourceServiceImpl implements ResourceService {
 	public UpdateInfo findUpdateInfo() {
 		// TODO Auto-generated method stub
 		//这是一个主干内容
+		//最后一个主干内容
 		return null;
 	}
 
