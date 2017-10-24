@@ -10,7 +10,7 @@ public class ResourceServiceImpl implements ResourceService {
 	@Override
 	public UpdateInfo findUpdateInfo() {
 		// TODO Auto-generated method stub
-
+		//最后一次主甘测试
 		return null;
 	}
 
