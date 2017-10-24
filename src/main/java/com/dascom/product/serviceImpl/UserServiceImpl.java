@@ -23,7 +23,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UpdateInfo findUpdateInfo() {
 		UpdateInfo info=new UpdateInfo();
-		
 		/*info.setAll(cpUserMapper.selectByTwoTime());*/
 		return null;
 	}
