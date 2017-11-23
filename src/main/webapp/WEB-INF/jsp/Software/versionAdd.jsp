@@ -1,3 +1,9 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!--_meta 作为公共模版分离出去-->
 <!DOCTYPE HTML>
 <html>
@@ -13,17 +19,17 @@
     <script type="text/javascript" src="__H-UI__/lib/html5shiv.js"></script>
     <script type="text/javascript" src="__H-UI__/lib/respond.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" type="text/css" href="__H-UI__/static/h-ui/css/H-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="__H-UI__/static/h-ui.admin/css/H-ui.admin.css" />
-    <link rel="stylesheet" type="text/css" href="__H-UI__/lib/Hui-iconfont/1.0.8/iconfont.css" />
-    <link rel="stylesheet" type="text/css" href="__H-UI__/static/h-ui.admin/skin/default/skin.css" id="skin" />
-    <link rel="stylesheet" type="text/css" href="__H-UI__/static/h-ui.admin/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath %>/static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath %>/static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath %>/lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath %>/static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath %>/static/h-ui.admin/css/style.css" />
     <!--[if IE 6]>
     <script type="text/javascript" src="__H-UI__/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
     <!--/meta 作为公共模版分离出去-->
-    <link href="__H-UI__/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+    <link href="<%=basePath %>/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
     <title>添加用户 - H-ui.admin v3.1</title>
 </head>
 <body>
@@ -32,13 +38,14 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>版本名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data.version}" placeholder="" id="username" name="name">
+            	<input type="hidden" value="${rid }" name="rid">
+                <input type="text" class="input-text" value="" placeholder="" id="username" name="version">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>版本号：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data.version_num}" placeholder="" name="name_num">
+                <input type="text" class="input-text" value="" placeholder="" name="versionNum">
             </div>
         </div>
         <div class="row cl">
@@ -53,9 +60,9 @@
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="FileUrl" id="FileUrl">
-            <input type="hidden" name="size" id="size" value="{$data.size}">
-            <input type="hidden" name="suffix" id="suffix" value="{$data.suffix}">
+            <input type="hidden" name="url" id="FileUrl">
+            <input type="hidden" name="size" id="size" value="${data.size}">
+            <input type="hidden" name="suffix" id="suffix" value="${data.suffix}">
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">支持系统：</label>
@@ -71,7 +78,7 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">描述：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <textarea name="beizhu" cols="" rows="" class="textarea"  placeholder="说点什么...">{$data.describe}</textarea>
+                <textarea name="describe" cols="" rows="" class="textarea"  placeholder="说点什么...">${data.describe}</textarea>
                 <!--<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>-->
             </div>
         </div>
@@ -79,12 +86,12 @@
             <label class="form-label col-xs-4 col-sm-3">设为最新版：</label>
             <div class="formControls col-xs-8 col-sm-9 skin-minimal">
                 <div class="check-box">
-                    <input type="checkbox" id="checkbox-2" name="new" value="1" >
+                    <input type="checkbox" id="checkbox-2" name="isNew" value="1" >
                     <label for="checkbox-1">&nbsp;</label>
                 </div>
             </div>
         </div>
-        <div class="row cl">
+        <!-- <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">添加到实用工具：</label>
             <div class="formControls col-xs-8 col-sm-9 skin-minimal">
                 <div class="check-box">
@@ -92,35 +99,64 @@
                     <label for="checkbox-1">&nbsp;</label>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+                <input class="btn btn-primary radius" type="button" onclick="addVersionSubmit()" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
             </div>
         </div>
     </form>
 </article>
 
 <!--_footer 作为公共模版分离出去-->
-<script type="text/javascript" src="__H-UI__/lib/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="__H-UI__/lib/layer/2.4/layer.js"></script>
-<script type="text/javascript" src="__H-UI__/static/h-ui/js/H-ui.min.js"></script>
-<script type="text/javascript" src="__H-UI__/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="<%=basePath %>/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<%=basePath %>/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="<%=basePath %>/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="<%=basePath %>/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
 
-<script type="text/javascript" src="__H-UI__/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="<%=basePath %>/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 
-<script type="text/javascript" src="__H-UI__/lib/webuploader/0.1.5/webuploader.min.js"></script>
+<script type="text/javascript" src="<%=basePath %>/lib/webuploader/0.1.5/webuploader.min.js"></script>
 <!--<script type="text/javascript" src="__PUBLIC__/js/started.js"></script>-->
 <script type="text/javascript">
+	//提交
+	function addVersionSubmit(){
+		var form = new FormData(document.getElementById("form-member-add"));
+		console.log($('form').serialize());
+		$.ajax({
+	        type: "post",
+	        url: "addVersionSubmit",
+	    	data:form,
+	    	contentType: false,
+	    	processData: false,
+	        dataType: "json",
+	        success: function (date )
+	        {
+	        	console.log(date);
+	           if(date.code=='1001'){
+	        	   alert(date.msg);
+	           }
+	           if(date.code=='1000'){
+					alert(date.msg);
+					window.location.href="addVersion?id="+'${rid}';
+	           }
+	        },
+	        error:function (date) {      
+	            alert("请求失败！");
+	        }
+	     });
+	}
+
+
     $(function(){
         $('.skin-minimal input').iCheck({
             checkboxClass: 'icheckbox-blue',
             radioClass: 'iradio-blue',
             increaseArea: '20%'
         });
-
+		//前端数据校验
         $("#form-member-add").validate({
             rules:{
                 name:{
@@ -135,7 +171,7 @@
                 },
                 system:{
                     required:true
-                }
+                } 
             }
         });
     });
@@ -153,14 +189,15 @@
             resize: false,
 
             // swf文件路径
-            swf: '__H-UI__/lib/webuploader/0.1.5/Uploader.swf',
+            swf: '<%=basePath %>/lib/webuploader/0.1.5/Uploader.swf',
 
             // 文件接收服务端。
-            server: '{:U("Upload/softwareFile")}',
+            server: 'uploadSoftware',
 
             // 选择文件的按钮。可选。
             // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-            pick: '#picker'
+            pick: '#picker',
+            fileNumLimit: 1, //限制上传个数
         });
 
         // 当有文件添加进来的时候
@@ -170,7 +207,7 @@
                     '<p class="state">等待上传...</p>' +
                     '</div>' );
         });
-
+		
         // 文件上传过程中创建进度条实时显示。
         uploader.on( 'uploadProgress', function( file, percentage ) {
             var $li = $( '#'+file.id ),
@@ -188,22 +225,18 @@
 
             $percent.css( 'width', percentage * 100 + '%' );
         });
-
+		//上传成功的方法
         uploader.on( 'uploadSuccess', function( file,data ) {
-            if (data.status==1) {
-                $('#size').val(data.data.file_size);
-                $('#suffix').val(data.data.suffix);
-                if ($('#FileUrl').val()=='') {
-                    $('#FileUrl').val(data.data.relative_path)
-                }else{
-                    $('#FileUrl').val($('#FileUrl').val()+','+data.data.relative_path)
-                }
+            if (data.code=="1000") {
+                $('#size').val(data.date.size);
+                $('#suffix').val(data.date.suffix);
+                    $('#FileUrl').val(data.date.path);
                 $( '#'+file.id ).find('p.state').text('已上传');
             }else{
-                $( '#'+file.id ).find('p.state').text('上传失败');
+                $( '#'+file.id ).find('p.state').text(date.msg);
             }
         });
-
+		//上传出错的方法
         uploader.on( 'uploadError', function( file ) {
             $( '#'+file.id ).find('p.state').text('上传出错');
         });
@@ -223,8 +256,10 @@
 
             if ( state === 'uploading' ) {
                 $btn.text('暂停上传');
-            } else {
+            } else if(state='done'){
                 $btn.text('开始上传');
+            }else{
+            	
             }
         });
 

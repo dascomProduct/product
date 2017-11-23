@@ -30,13 +30,13 @@
 			<value>com.mysql.jdbc.Driver</value>
 		</property>
 		<property name="url">
-			<value>jdbc:mysql://localhost:3306/ds_product</value>
+			<value>jdbc:mysql://192.168.11.122:3306/dcproduct</value>
 		</property>
 		<property name="username">
-			<value>yin</value>
+			<value>root</value>
 		</property>
 		<property name="password">
-			<value>123456</value>
+			<value>root</value>
 		</property>
 	</bean>
 
@@ -85,8 +85,6 @@
 			</list>
 		</property>
 	</bean>
-	
-	
 	
 	
 </beans>

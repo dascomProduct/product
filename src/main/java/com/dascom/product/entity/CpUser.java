@@ -25,17 +25,7 @@ public class CpUser {
 
     private Date updateTime;
 
-    private CpAuthGroup cpAuthGroup;
-    
-    public CpAuthGroup getCpAuthGroup() {
-		return cpAuthGroup;
-	}
-
-	public void setCpAuthGroup(CpAuthGroup cpAuthGroup) {
-		this.cpAuthGroup = cpAuthGroup;
-	}
-
-	public Integer getId() {
+    public Integer getId() {
         return id;
     }
 

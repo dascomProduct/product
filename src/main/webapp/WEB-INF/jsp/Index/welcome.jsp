@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <div class="page-container">
     <p class="f-20 text-success">欢迎登录得实产品管理系统！</p>
     <p>登录IP地址：${ip}</p>
-    <table class="table table-border table-bordered table-bg">
+    <!-- <table class="table table-border table-bordered table-bg">
         <thead>
         <tr>
             <th colspan="4" scope="col">信息更新统计</th>
@@ -72,7 +72,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <td>{$data.res.month}</td>
         </tr>
         </tbody>
-    </table>
+    </table> -->
    <!-- <table class="table table-border table-bordered table-bg mt-20">
         <thead>
         <tr>

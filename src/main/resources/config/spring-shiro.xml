@@ -40,12 +40,16 @@
 		<!-- 过虑器链定义，从上向下顺序执行，一般将/**放在最下边 -->
 		<property name="filterChainDefinitions">
 			<value>
+				
+				<!-- 测试 jsp -->
+				/test.jsp = anon
 				<!-- 验证码 -->
 				/validateCode = anon
 				<!-- 登录页面  -->
 				/login =anon 
 				/loginSubmit =anon
 				/loginHint = anon
+				/Display/** =anon
 				<!-- /error.do =anon
 				/login.do =anon
 				/index.jsp = anon
@@ -62,7 +66,11 @@
 				/img/** =anon
 				/lib/** anon
 				/static/** = anon
-				/** =authc
+				/newdascome/** =anon
+				/apply/** =anon
+				/software/**  =anon
+				/** = authc
+				<!-- /** =authc -->
 				<!-- 配置记住我或认证通过可以访问的地址 -->
 				<!-- /** = authc 所有url都必须认证通过才可以访问-->
 				<!--  /** =  anon -->
@@ -116,10 +124,6 @@
         <constructor-arg name="name" value="ycyintang.session.id"/>
     </bean>
 	 
-	 
-	
-	
-	
 	
 	
 	<!-- 自定义异常处理 -->

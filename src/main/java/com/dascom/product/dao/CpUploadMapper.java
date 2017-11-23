@@ -2,7 +2,6 @@ package com.dascom.product.dao;
 
 import com.dascom.product.entity.CpUpload;
 import com.dascom.product.entity.CpUploadExample;
-import com.dascom.product.entity.CpUser;
 
 import java.util.List;
 

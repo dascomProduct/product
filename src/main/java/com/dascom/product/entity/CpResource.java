@@ -2,22 +2,55 @@ package com.dascom.product.entity;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
+
 public class CpResource {
     private Integer id;
-
+    
     private String title;
-
+    
+    private String name;
+    
     private Integer type;
 
     private String url;
+    
+    private String coverUrl;
+    
+    private String  describe ;
 
     private Date time;
 
     private String size;
 
     private String suffix;
+    
+    public String getName() {
+		return name;
+	}
 
-    public Integer getId() {
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCoverUrl() {
+		return coverUrl;
+	}
+
+	public void setCoverUrl(String coverUrl) {
+		this.coverUrl = coverUrl;
+	}
+
+	public String getDescribe() {
+		return describe;
+	}
+
+	public void setDescribe(String describe) {
+		this.describe = describe;
+	}
+
+	public Integer getId() {
         return id;
     }
 

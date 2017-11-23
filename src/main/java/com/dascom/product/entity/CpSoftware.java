@@ -5,29 +5,29 @@ import java.util.Date;
 public class CpSoftware {
     private Integer id;
 
-    private Integer rid;
+    private Integer rid; //所属资源id
 
-    private String version;
+    private String version; //版本名
 
-    private String versionNum;
+    private String versionNum;  //版本号
 
-    private String system;
+    private String system; //Windows  Android  iPhone
 
-    private Date time;
+    private Date time; //添加时间
 
-    private String url;
+    private String url; //版本下载地址
 
     private String size;
 
-    private String suffix;
+    private String suffix; //后缀
 
-    private Integer isTool;
+    private Integer isTool; //!0：已添加到实用工具d的id，0：未添加
 
-    private Integer downloadNum;
+    private Integer downloadNum;  //下载数
 
-    private Integer isNew;
+    private Integer isNew; //1:新版 0：旧板
 
-    private String describe;
+    private String describe; //版本描述
 
     public Integer getId() {
         return id;

@@ -1,3 +1,10 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -12,11 +19,12 @@
     <script type="text/javascript" src="../../../lib/html5shiv.js"></script>
     <script type="text/javascript" src="../../../lib/respond.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" type="text/css" href="../../../static/h-ui/css/H-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/h-ui.admin/css/H-ui.admin.css" />
-    <link rel="stylesheet" type="text/css" href="../../../lib/Hui-iconfont/1.0.8/iconfont.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/h-ui.admin/skin/default/skin.css" id="skin" />
-    <link rel="stylesheet" type="text/css" href="../../../static/h-ui.admin/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath %>/static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath %>./static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath %>/lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath %>/static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath %>/static/h-ui.admin/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath %>/js/asset/bootstrap/dist/css/bootstrap.css" />
     <!--[if IE 6]>
     <script type="text/javascript" src="../../../lib/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
@@ -29,10 +37,10 @@
     <div class="text-c">
         <form action="" method="post">
             <input type="text" class="input-text" style="width:250px" placeholder="输入管理员名称" id="" name="key">
-            <button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+            <button type="submit" class="btn btn-success" id="like" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
         </form>
     </div>
-    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="admin_add('添加管理员','addUser.html','800','600')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a></span> <span class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
+    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="admin_add('添加管理员','addUser.html','800','600')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a></span> <span class="r">共有数据：<strong>${userList.total}</strong> 条</span> </div>
     <table class="table table-border table-bordered table-bg">
         <thead>
         <tr>
@@ -44,44 +52,55 @@
             <th width="150">登录名</th>
             <th width="90">手机</th>
             <th width="150">邮箱</th>
-            <th>角色</th>
+            <!-- <th>角色</th> -->
             <th width="130">加入时间</th>
             <th width="100">是否已启用</th>
             <th width="150">操作</th>
         </tr>
         </thead>
         <tbody>
-        <volist name="data" id="vo" key="k">
-        <tr class="text-c">
-            <td><input type="checkbox" value="{$vo.id}" name="batch"></td>
-            <td>{$k}</td>
-            <td>{$vo.username}</td>
-            <td>{$vo.phone}</td>
-            <td>{$vo.email}</td>
-            <td>{$vo.title}</td>
-            <td>{$vo.register_time}</td>
-            <td class="td-status"><span class="label <?php if($vo['status']==1){echo 'label-success';}?> radius"><?php if($vo['status']==1){echo '已启用';}else{echo '已停用';}?></span></td><!--<span class="label radius">已停用</span>-->
-            <td class="td-manage">
-                <a style="text-decoration:none" onClick="" href="javascript:;" title="<?php if($vo['status']==1){echo '停用';}else{echo '启用';}?>"><i class="Hui-iconfont"></i></a>
-                <a title="重置密码" href="javascript:;" onclick="reset_pwd('{$vo.id}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe63f;</i></a>
-                <a title="编辑" href="javascript:;" onclick="admin_edit('管理员编辑','','{$vo.id}','800','600')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
-                <a title="删除" href="javascript:;" onclick="admin_del(this,'{$vo.id}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
-            </td>
-        </tr>
-        </volist>
+        <c:forEach items="${userList.dataList }" var="vo" varStatus="status" >
+	        <tr class="text-c">
+	            <td><input type="checkbox" value="${vo.id}" name="batch"></td>
+	            <td>${status.index+1}</td>
+	            <td>${vo.username}</td>
+	            <td>${vo.phone}</td>
+	            <td>${vo.email}</td>
+	            <%-- <td> ${vo.title}</td> --%>
+	            <td><fmt:formatDate value="${vo.registerTime}" pattern="yyyy-HH-dd"/></td>
+	            <td class="td-status">
+	            	<c:if test="${vo.status}">
+	            	已启用
+	            	</c:if>
+	            	<c:if test="${!vo.status}">
+	            	已停用
+	            	</c:if>
+		            <%-- <span class="label <?php if($vo['status']==1){echo 'label-success';}?> radius">
+		            	<?php if($vo['']==1){echo '已启用';}else{echo '已停用';}?>
+		            </span> --%>
+	            </td><!--<span class="label radius">已停用</span>-->
+	            <td class="td-manage">
+	                <%-- <a style="text-decoration:none" onClick="" href="javascript:;" title="<?php if($vo['status']==1){echo '停用';}else{echo '启用';}?>"><i class="Hui-iconfont"></i></a> --%>
+	               <!--  <a title="重置密码" href="javascript:;" onclick="reset_pwd('{$vo.id}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe63f;</i></a> -->
+	                <a title="编辑" href="javascript:;" onclick="admin_edit('管理员编辑','updateUser','${vo.id}','800','600')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+	                <a title="删除" href="javascript:;" onclick="admin_del(this,'${vo.id}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+	            </td>
+	        </tr>
+        </c:forEach>
         </tbody>
     </table>
 </div>
+<div id="paging"></div>
 <!--_footer 作为公共模版分离出去-->
-<script type="text/javascript" src="../../../lib/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="../../../lib/layer/2.4/layer.js"></script>
-<script type="text/javascript" src="../../../static/h-ui/js/H-ui.min.js"></script>
-<script type="text/javascript" src="../../../static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="<%=basePath %>/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<%=basePath %>/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="<%=basePath %>/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="<%=basePath %>/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
-<script type="text/javascript" src="../../../lib/My97DatePicker/4.8/WdatePicker.js"></script>
-<script type="text/javascript" src="../../../lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="../../../lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript" src="<%=basePath %>/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="<%=basePath %>/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<%=basePath %>/lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
     /*
      参数解释：
@@ -107,11 +126,11 @@
         layer.confirm('确认要删除吗？',function(index){
             $.ajax({
                 type: 'POST',
-                url: '{:U("userDel")}',
+                url: 'delUser',
                 data:{id:id},
                 dataType: 'json',
                 success: function(data){
-                    if (data.status==1) {
+                    if (data.code==1000) {
                         if ($.isArray(obj)) {
                             for (var i=0;i<obj.length;i++) {
                                 $(obj[i]).parents("tr").remove();
@@ -121,9 +140,9 @@
                             $(obj).parents("tr").remove();
                             $('.r strong').html($count-1);
                         }
-                        layer.msg(data.info,{icon:1,time:1500});
+                        layer.msg(data.msg,{icon:1,time:1500});
                     }else{
-                        layer.msg(data.info,{icon:2,time:1500});
+                        layer.msg(data.msg,{icon:2,time:1500});
                     }
                 },
                 error:function(data) {
@@ -223,6 +242,87 @@
             });
         });
     }
+    
+    $(function() {
+		/* 加载分页  */
+		//当前页
+		var pageNumber = parseInt('${userList.pageNo}');
+		//页面大小
+		var pageSize = parseInt('${userList.pageSize}');
+		//总页数
+		var pages = parseInt('${userList.pages}');
+		//总条数
+		var pageTotal = parseInt('${userList.total}');
+		//页面地址
+		var pageStart = "href='findUserList?like="+$("#like").val()+"&pageNumber=";
+		var pageEnd = "'";
+
+		if(pages == 0) pages = 1;
+
+		var paging = "" +
+			"<div class='pull-right'  style='padding: 0px 10%  0px 10%'' >" +
+			"<form class='form-inline' role='form'>" +
+			"<div class='form-group'>";
+		if(pages == pageNumber) {
+			paging = paging + "当前页" + (((pageNumber - 1) * pageSize) + 1) + "~" + pageTotal + "条 ,共 " + pageTotal + " 条";
+		} else {
+			paging = paging + "当前页" + (((pageNumber - 1) * pageSize) + 1) + "~" + (pageNumber * pageSize) + "条 ,共 " + pageTotal + " 条";
+		}
+		paging = paging +
+			"</div>" +
+			"<div class='form-group'>" +
+			"<ul class='pagination'>";
+		if(pageNumber <= 1) {
+			paging = paging + "<li class='disabled'><a >上一页</a></li>";
+		} else {
+			paging = paging + "<li ><a " + pageStart + (pageNumber - 1) + pageEnd + " >上一页</a></li>";
+		}
+		if(pageNumber <= 3) {
+			for(var i = 1; i <= pages && i <= 5; i++) {
+				if(i == pageNumber) {
+					paging = paging + "<li class='active' ><a " + pageStart + i + pageEnd + ">" + i + "</a></li>";
+				} else {
+					paging = paging + "<li><a " + pageStart + i + pageEnd + ">" + i + "</a></li>";
+				}
+
+			}
+		} else if(pageNumber >= 3 && pageNumber <= (pages - 2)) {
+			for(var i = (pageNumber - 2); i <= (pageNumber + 2); i++) {
+				if(i == pageNumber) {
+					paging = paging + "<li class='active' ><a " + pageStart + i + pageEnd + ">" + i + "</a></li>";
+				} else {
+					paging = paging + "<li><a " + pageStart + i + pageEnd + ">" + i + "</a></li>";
+				}
+			}
+		} else if(pageNumber >= (pages - 2)) {
+			for(var i = 4; i >= 0; i--) {
+				if((pages - i) == pageNumber) {
+
+					paging = paging + "<li class='active' ><a " + pageStart + (pages - i) + pageEnd + " >" + (pages - i) + "</a></li>";
+
+				} else {
+					if((pages - i) > 0) {
+						paging = paging + "<li><a " + pageStart + (pages - i) + pageEnd + " >" + (pages - i) + "</a></li>";
+					}
+				}
+			}
+		}
+
+		if(pageNumber >= (pages)) {
+			paging = paging + "<li class='disabled'><a>下一页</a></li>";
+		} else {
+			paging = paging + "<li ><a " + pageStart + (pageNumber + 1) + pageEnd + " >下一页</a></li>";
+		}
+		paging = paging +
+			"</ul>" +
+			"</div>" +
+			"</form>" +
+			"</div>";
+		$("#paging").html(paging);
+		/*alert (pageNumber+""+pageSize+""+pages+""+pageTotal);*/
+	});
+    
+    
 </script>
 </body>
 </html>
